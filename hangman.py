@@ -1,9 +1,10 @@
-import random
-from words import words
+import requests
+# from words import words
 
 
 def get_word():
-    return (random.choice(words)).upper()
+    word = requests.get("https://random-word-api.herokuapp.com/word").text.upper().strip('[], ""')
+    return word
 
 
 def hangman():
@@ -48,11 +49,12 @@ def hangman():
             print("You already guessed that letter")
             continue
 
-        if guess in word:
+            # check if letter is guessed
+        if word.count(guess) >= 1:
             print("Correct!")
             print("\t")
             guesses += guess
-            correctletters += 1
+            correctletters += word.count(guess)
         else:
             print("Wrong letter!")
             print("\t")
@@ -64,7 +66,7 @@ def hangman():
             break
         elif correctletters == len(word):
             print(word)
-            print("Bravo legendice!")
+            print("Congratulations!")
             break
 
 
